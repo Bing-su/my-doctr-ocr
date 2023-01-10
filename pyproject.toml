@@ -1,0 +1,51 @@
+[project]
+name = "my-doctr-ocr"
+version = "0.1.0"
+description = "training doctr ocr model"
+authors = [
+    {name = "dowon", email = "ks2515@naver.com"},
+]
+dependencies = [
+    "torch",
+    "torchvision",
+    "python-doctr @ git+https://github.com/Bing-su/doctr",
+    "pytorch-lightning",
+    "wandb",
+    "pandas",
+    "polars",
+    "rich",
+    "loguru",
+    "typer",
+    "opencv-python",
+    "albumentations",
+    "timm",
+]
+requires-python = ">=3.10"
+license = {text = "MIT"}
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "black",
+    "isort",
+    "ruff",
+    "mypy",
+]
+
+[tool.pdm.scripts]
+isort = "isort ."
+black = "black ."
+style = {composite = ["isort", "black"]}
+ruff = "ruff ."
+rufffix = "ruff --fix ."
+
+[tool.isort]
+profile = "black"
+
+[tool.ruff]
+select = ["A", "B", "C4", "E", "F", "N", "PT", "UP", "W"]
+ignore = ["B008", "B905", "E501"]
+unfixable = ["F401"]
+
+[build-system]
+requires = ["pdm-pep517>=1.0.0"]
+build-backend = "pdm.pep517.api"
