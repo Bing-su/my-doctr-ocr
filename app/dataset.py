@@ -9,6 +9,8 @@ import torch
 from PIL import Image
 from torch.utils.data import ConcatDataset, DataLoader, Dataset
 
+from .util import train_transform, val_transform
+
 BatchOutput = tuple[torch.Tensor, str]
 TransformType = Callable[[npt.NDArray[np.uint8]], torch.Tensor]
 
@@ -42,20 +44,18 @@ class RecDataModule(pl.LightningDataModule):
         self,
         train_csv: Iterable[str | Path],
         val_csv: Iterable[str | Path],
-        transform: TransformType,
         batch_size: int = 32,
         num_workers: int = 8,
     ):
         super().__init__()
         self.train_csv = list(train_csv)
         self.val_csv = list(val_csv)
-        self.transform = transform
         self.batch_size = batch_size
         self.num_workers = num_workers
 
     def setup(self, stage=None):
-        train_datasets = [RecDataset(csv, self.transform) for csv in self.train_csv]
-        val_datasets = [RecDataset(csv, self.transform) for csv in self.val_csv]
+        train_datasets = [RecDataset(csv, train_transform) for csv in self.train_csv]
+        val_datasets = [RecDataset(csv, val_transform) for csv in self.val_csv]
         self.train_dataset = ConcatDataset(train_datasets)
         self.val_dataset = ConcatDataset(val_datasets)
 

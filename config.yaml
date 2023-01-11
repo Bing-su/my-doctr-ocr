@@ -1,0 +1,18 @@
+model:
+  size: "base"
+  optimizer: "adamw"
+  lr: !!float 1e-3
+  weigth_decay: !!float 0.01
+
+data:
+  batch_size: 32
+  num_workers: 12
+
+trainer:
+  precision: 16
+  gradient_clip_val: null
+  max_epochs: 10
+  log_every_n_steps: 200
+  resume_from_checkpoint: null
+  limit_val_batches: 10000
+  fast_dev_run: 0
