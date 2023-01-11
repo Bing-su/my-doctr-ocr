@@ -43,7 +43,7 @@ profile = "black"
 
 [tool.ruff]
 select = ["A", "B", "C4", "E", "F", "N", "PT", "UP", "W"]
-ignore = ["B008", "B905", "E501"]
+ignore = ["B008", "B905", "E501", "N812"]
 unfixable = ["F401"]
 
 [build-system]
