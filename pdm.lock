@@ -362,6 +362,14 @@ requires_python = ">=3.7"
 summary = "multidict implementation"
 
 [[package]]
+name = "munch"
+version = "2.5.0"
+summary = "A dot-accessible dictionary (a la JavaScript objects)"
+dependencies = [
+    "six",
+]
+
+[[package]]
 name = "mypy"
 version = "0.991"
 requires_python = ">=3.7"
@@ -906,7 +914,7 @@ summary = "Zopfli module for python"
 
 [metadata]
 lock_version = "4.1"
-content_hash = "sha256:6a0d1d319b59f212af3b3be76cfe0583e6de159856663b86543fe1df55c449e4"
+content_hash = "sha256:e3134234565b19bb2c96f34f217e8d4e4212da02fe29ab891e97f1dd97a28e5f"
 
 [metadata.files]
 "aiohttp 3.8.3" = [
@@ -1670,6 +1678,10 @@ content_hash = "sha256:6a0d1d319b59f212af3b3be76cfe0583e6de159856663b86543fe1df5
     {url = "https://files.pythonhosted.org/packages/fc/54/8e025ae4e31d899e4528a570941eb7048512392b454acccf69c2dccfcb0d/multidict-6.0.4-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:eeb6dcc05e911516ae3d1f207d4b0520d07f54484c49dfc294d6e7d63b734171"},
     {url = "https://files.pythonhosted.org/packages/fc/5b/0a4205a1248fb152f596a03c971c6ef1585d0c98e56b6886dc35d084e366/multidict-6.0.4-cp311-cp311-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:7d18748f2d30f94f498e852c67d61261c643b349b9d2a581131725595c45ec6c"},
     {url = "https://files.pythonhosted.org/packages/fe/0c/8469202f8f4b0e65816f91c3febc4bda7316c995b59ecdf3b15c574f7a24/multidict-6.0.4-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:cc8e1d0c705233c5dd0c5e6460fbad7827d5d36f310a0fadfd45cc3029762258"},
+]
+"munch 2.5.0" = [
+    {url = "https://files.pythonhosted.org/packages/43/a1/ec48010724eedfe2add68eb7592a0d238590e14e08b95a4ffb3c7b2f0808/munch-2.5.0.tar.gz", hash = "sha256:2d735f6f24d4dba3417fa448cae40c6e896ec1fdab6cdb5e6510999758a4dbd2"},
+    {url = "https://files.pythonhosted.org/packages/cc/ab/85d8da5c9a45e072301beb37ad7f833cd344e04c817d97e0cc75681d248f/munch-2.5.0-py2.py3-none-any.whl", hash = "sha256:6f44af89a2ce4ed04ff8de41f70b226b984db10a91dcc7b9ac2efc1c77022fdd"},
 ]
 "mypy 0.991" = [
     {url = "https://files.pythonhosted.org/packages/0e/5c/fbe112ca73d4c6a9e65336f48099c60800514d8949b4129c093a84a28dc8/mypy-0.991.tar.gz", hash = "sha256:3c0165ba8f354a6d9881809ef29f1a9318a236a6d81c690094c5df32107bde06"},

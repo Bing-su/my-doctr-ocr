@@ -19,6 +19,8 @@ dependencies = [
     "opencv-python",
     "albumentations",
     "timm",
+    "pyyaml",
+    "munch",
 ]
 requires-python = ">=3.10"
 license = {text = "MIT"}
