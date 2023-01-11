@@ -1,4 +1,4 @@
-from collections.abc import Callable
+from collections.abc import Callable, Iterable
 from pathlib import Path
 
 import numpy as np
@@ -16,7 +16,7 @@ TransformType = Callable[[npt.NDArray[np.uint8]], torch.Tensor]
 class RecDataset(Dataset):
     "https://github.com/mindee/doctr/blob/main/doctr/datasets/datasets/base.py"
 
-    def __init__(self, csv: str, transform: TransformType):
+    def __init__(self, csv: str | Path, transform: TransformType):
         self.path = Path(csv).parent / "images"
         self.df = pls.read_csv(csv)
         self.transform = transform
@@ -39,11 +39,16 @@ def collate_fn(batch: list[BatchOutput]) -> tuple[torch.Tensor, list[str]]:
 
 class RecDataModule(pl.LightningDataModule):
     def __init__(
-        self, transform: TransformType, batch_size: int = 32, num_workers: int = 8
+        self,
+        train_csv: Iterable[str | Path],
+        val_csv: Iterable[str | Path],
+        transform: TransformType,
+        batch_size: int = 32,
+        num_workers: int = 8,
     ):
         super().__init__()
-        self.train_csv = []
-        self.val_csv = []
+        self.train_csv = list(train_csv)
+        self.val_csv = list(val_csv)
         self.transform = transform
         self.batch_size = batch_size
         self.num_workers = num_workers
