@@ -2,6 +2,7 @@ from datetime import datetime
 from pathlib import Path
 
 import pytorch_lightning as pl
+from doctr.models import push_to_hf_hub
 from loguru import logger
 from munch import Munch
 from pytorch_lightning.callbacks import (
@@ -9,7 +10,6 @@ from pytorch_lightning.callbacks import (
     ModelCheckpoint,
     RichProgressBar,
 )
-from doctr.models import push_to_hf_hub
 from pytorch_lightning.loggers import WandbLogger
 from rich.traceback import install
 
@@ -21,6 +21,7 @@ install(show_locals=True, suppress=["torch"])
 
 def main():
     cfg: Munch = Munch.fromYAML(Path("config.yaml").read_text("utf-8"))
+    data: Munch = Munch.fromYAML(Path(".csv.yaml").read_text("utf-8"))
 
     logger.info("Start training")
 
@@ -32,8 +33,8 @@ def main():
     )
 
     datamodule = RecDataModule(
-        train_csv=[],
-        val_csv=[],
+        train_csv=data.train,
+        val_csv=data.validation,
         batch_size=cfg.data.batch_size,
         num_workers=cfg.data.num_workers,
     )
