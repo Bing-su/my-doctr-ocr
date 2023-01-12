@@ -52,17 +52,22 @@ class RecModule(pl.LightningModule):
         self.log("val_mer", self.mer)
 
     def configure_optimizers(self):
+        kwargs = {}
+        if self.hparams.optimizer in ("adam", "adamw"):
+            kwargs["capturable"] = True
+
         optimizer = create_optimizer_v2(
             self.model,
             opt=self.hparams.optimizer,
             lr=self.hparams.lr,
             weight_decay=self.hparams.weight_decay,
+            **kwargs,
         )
 
         scheduler = torch.optim.lr_scheduler.OneCycleLR(
             optimizer,
             max_lr=self.hparams.lr,
-            steps_per_epoch=self.trainer.estimated_stepping_batches,
+            total_steps=self.trainer.estimated_stepping_batches,
         )
 
         scheduler_config = {

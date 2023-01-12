@@ -28,8 +28,12 @@ class RecDataset(Dataset):
 
     def __getitem__(self, idx) -> BatchOutput:
         row: tuple[str, str] = self.df.row(idx)
-        image_path, text = row
-        pil_image = Image.open(self.path / image_path).convert("RGB")
+        img_name, text = row
+        img_path = self.path / img_name
+        if not text or not img_path.exists():
+            j = np.random.randint(0, len(self))
+            return self[j]
+        pil_image = Image.open(img_path).convert("RGB")
         array = np.asarray(pil_image)
         return self.transform(array), text
 
@@ -74,7 +78,7 @@ class RecDataModule(pl.LightningDataModule):
         return DataLoader(
             self.val_dataset,
             batch_size=self.batch_size,
-            num_workers=self.num_workers,
+            num_workers=max(6, self.num_workers),
             collate_fn=collate_fn,
             shuffle=True,  # True for sampling
             pin_memory=True,
