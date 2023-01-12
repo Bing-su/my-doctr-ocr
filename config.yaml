@@ -2,7 +2,7 @@ model:
   size: "base"
   optimizer: "adamw"
   lr: !!float 1e-3
-  weigth_decay: !!float 0.01
+  weight_decay: !!float 0.01
 
 data:
   batch_size: 32
