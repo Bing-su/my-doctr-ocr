@@ -6,9 +6,11 @@ authors = [
     {name = "dowon", email = "ks2515@naver.com"},
 ]
 dependencies = [
-    "torch",
-    "torchvision",
-    "python-doctr @ git+https://github.com/Bing-su/doctr",
+    "torch @ https://download.pytorch.org/whl/cu117/torch-1.13.1%2Bcu117-cp310-cp310-win_amd64.whl ; sys_platform == \"win32\" and python_version == \"3.10\"",
+    "torch; sys_platform != 'win32'",
+    "torchvision @ https://download.pytorch.org/whl/cu117/torchvision-0.14.1%2Bcu117-cp310-cp310-win_amd64.whl ; sys_platform == \"win32\" and python_version == \"3.10\"",
+    "torchvision; sys_platform != 'win32'",
+    "python-doctr @ git+https://github.com/Bing-su/doctr@ko",
     "pytorch-lightning",
     "wandb",
     "pandas",
@@ -22,7 +24,7 @@ dependencies = [
     "pyyaml",
     "munch",
 ]
-requires-python = ">=3.10"
+requires-python = "==3.10.*"
 license = {text = "MIT"}
 
 [tool.pdm.dev-dependencies]
