@@ -30,13 +30,13 @@ class RecModule(pl.LightningModule):
         self.cer = CharErrorRate()
         self.mer = MatchErrorRate()
 
-    def training_step(self, batch):
+    def training_step(self, batch, batch_idx):
         images, targets = batch
         output = self.model(images, targets)
         self.log("train_loss", output["loss"])
         return output["loss"]
 
-    def validation_step(self, batch):
+    def validation_step(self, batch, batch_idx):
         images, targets = batch
         output = self.model(images, targets, return_preds=True)
         if output["preds"]:

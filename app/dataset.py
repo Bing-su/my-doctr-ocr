@@ -34,7 +34,7 @@ class RecDataset(Dataset):
             j = np.random.randint(0, len(self))
             return self[j]
         pil_image = Image.open(img_path).convert("RGB")
-        array = np.asarray(pil_image)
+        array = np.array(pil_image)
         return self.transform(array), text
 
 
