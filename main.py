@@ -70,7 +70,9 @@ def main():
     best_model_path = trainer.checkpoint_callback.best_model_path
     logger.info(f"Best model path: {best_model_path}")
     if best_model_path and Path(best_model_path).is_file():
+        logger.info(f"Load best model: {best_model_path}")
         best_model = RecModule.load_from_checkpoint(best_model_path)
+        best_model.save("save/best_model.pt")
         model = best_model.model
 
         logger.info(f"Push to HuggingFace Hub: {wandb_name}")
