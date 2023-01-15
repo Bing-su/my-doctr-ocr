@@ -79,6 +79,7 @@ class RecModule(pl.LightningModule):
 
     def save(self, path: str | None = None):
         save_path = Path(path) if path else Path.cwd() / "model.pt"
+        save_path.parent.mkdir(exist_ok=True, parents=True)
         state_dict = self.model.state_dict()
         config = self.model.cfg
         torch.save(state_dict, save_path)
