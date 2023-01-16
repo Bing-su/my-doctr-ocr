@@ -33,6 +33,7 @@ dev = [
     "isort",
     "ruff",
     "mypy",
+    "ipywidgets",
 ]
 
 [tool.pdm.scripts]
