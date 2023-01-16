@@ -76,7 +76,12 @@ def main():
         model = best_model.model
 
         logger.info(f"Push to HuggingFace Hub: {wandb_name}")
-        push_to_hf_hub(model, model_name=wandb_name, task="recognition")
+        push_to_hf_hub(
+            model,
+            model_name=wandb_name,
+            task="recognition",
+            arch=f"vitstr_{cfg.model.size}",
+        )
 
 
 if __name__ == "__main__":
