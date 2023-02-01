@@ -27,6 +27,7 @@ from torchvision.transforms import ColorJitter, Compose, Normalize
 
 import wandb
 
+from .dataset import train_dataset, val_dataset
 from .utils import plot_recorder, plot_samples
 
 
@@ -191,39 +192,7 @@ def main(args):
     system_available_memory = int(psutil.virtual_memory().available / 1024**3)
 
     st = time.time()
-    val_set = DetectionDataset(
-        img_folder=os.path.join(args.val_path, "images"),
-        label_path=os.path.join(args.val_path, "labels.json"),
-        sample_transforms=T.SampleCompose(
-            (
-                [
-                    T.Resize(
-                        (args.input_size, args.input_size),
-                        preserve_aspect_ratio=True,
-                        symmetric_pad=True,
-                    )
-                ]
-                if not args.rotation or args.eval_straight
-                else []
-            )
-            + (
-                [
-                    T.Resize(
-                        args.input_size, preserve_aspect_ratio=True
-                    ),  # This does not pad
-                    T.RandomRotate(90, expand=True),
-                    T.Resize(
-                        (args.input_size, args.input_size),
-                        preserve_aspect_ratio=True,
-                        symmetric_pad=True,
-                    ),
-                ]
-                if args.rotation and not args.eval_straight
-                else []
-            )
-        ),
-        use_polygons=args.rotation and not args.eval_straight,
-    )
+    val_set = val_dataset(args)
     val_loader = DataLoader(
         val_set,
         batch_size=args.batch_size,
@@ -231,7 +200,7 @@ def main(args):
         num_workers=args.workers,
         sampler=SequentialSampler(val_set),
         pin_memory=torch.cuda.is_available(),
-        collate_fn=val_set.collate_fn,
+        collate_fn=val_set.datasets[0].collate_fn,
     )
     print(
         f"Validation set loaded in {time.time() - st:.4}s ({len(val_set)} samples in "
@@ -246,7 +215,7 @@ def main(args):
     model = detection.__dict__[args.arch](
         pretrained=args.pretrained,
         assume_straight_pages=not args.rotation,
-        class_names=val_set.class_names,
+        class_names=val_set.datasets[0].class_names,
     )
 
     # Resume weights
@@ -290,44 +259,7 @@ def main(args):
 
     st = time.time()
     # Load both train and val data generators
-    train_set = DetectionDataset(
-        img_folder=os.path.join(args.train_path, "images"),
-        label_path=os.path.join(args.train_path, "labels.json"),
-        img_transforms=Compose(
-            [
-                # Augmentations
-                T.RandomApply(T.ColorInversion(), 0.1),
-                ColorJitter(brightness=0.3, contrast=0.3, saturation=0.3, hue=0.02),
-            ]
-        ),
-        sample_transforms=T.SampleCompose(
-            (
-                [
-                    T.Resize(
-                        (args.input_size, args.input_size),
-                        preserve_aspect_ratio=True,
-                        symmetric_pad=True,
-                    )
-                ]
-                if not args.rotation
-                else []
-            )
-            + (
-                [
-                    T.Resize(args.input_size, preserve_aspect_ratio=True),
-                    T.RandomRotate(90, expand=True),
-                    T.Resize(
-                        (args.input_size, args.input_size),
-                        preserve_aspect_ratio=True,
-                        symmetric_pad=True,
-                    ),
-                ]
-                if args.rotation
-                else []
-            )
-        ),
-        use_polygons=args.rotation,
-    )
+    train_set = train_dataset(args)
 
     train_loader = DataLoader(
         train_set,
@@ -336,7 +268,7 @@ def main(args):
         num_workers=args.workers,
         sampler=RandomSampler(train_set),
         pin_memory=torch.cuda.is_available(),
-        collate_fn=train_set.collate_fn,
+        collate_fn=train_set.datasets[0].collate_fn,
     )
     print(
         f"Train set loaded in {time.time() - st:.4}s ({len(train_set)} samples in "
