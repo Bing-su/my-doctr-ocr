@@ -173,7 +173,7 @@ poetry.toml
 # End of https://www.toptal.com/developers/gitignore/api/python
 
 *test.ipynb
-.csv.yaml
+.*csv.yaml
 wandb/
 checkpoints*/
 .ckpt
