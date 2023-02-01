@@ -1,11 +1,11 @@
 model:
-  size: "base"
+  size: "small"
   optimizer: "adamw"
   lr: !!float 1e-3
   weight_decay: !!float 0.01
 
 data:
-  batch_size: 32
+  batch_size: 256
   num_workers: 12
 
 trainer:

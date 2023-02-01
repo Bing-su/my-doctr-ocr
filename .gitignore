@@ -175,7 +175,7 @@ poetry.toml
 *test.ipynb
 .csv.yaml
 wandb/
-checkpoints/
+checkpoints*/
 .ckpt
 .pt
 save/

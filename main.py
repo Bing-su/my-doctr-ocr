@@ -13,8 +13,8 @@ from pytorch_lightning.callbacks import (
 from pytorch_lightning.loggers import WandbLogger
 from rich.traceback import install
 
-from app.dataset import RecDataModule
-from app.module import RecModule
+from rec.dataset import RecDataModule
+from rec.module import RecModule
 
 install(show_locals=True, suppress=["torch"])
 

@@ -1,6 +1,6 @@
 [project]
 name = "my-doctr-ocr"
-version = "0.1.0"
+version = "0.2.0"
 description = "training doctr ocr model"
 authors = [
     {name = "dowon", email = "ks2515@naver.com"},
@@ -23,6 +23,9 @@ dependencies = [
     "timm",
     "pyyaml",
     "munch",
+    "fastprogress>=0.1.21",
+    "psutil>=5.9.0",
+
 ]
 requires-python = "==3.10.*"
 license = {text = "MIT"}
