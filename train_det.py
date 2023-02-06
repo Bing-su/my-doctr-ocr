@@ -27,8 +27,8 @@ from torchvision.transforms import ColorJitter, Compose, Normalize
 
 import wandb
 
-from .dataset import train_dataset, val_dataset
-from .utils import plot_recorder, plot_samples
+from det.dataset import train_dataset, val_dataset
+from det.utils import plot_recorder, plot_samples
 
 
 def record_lr(
@@ -206,8 +206,8 @@ def main(args):
         f"Validation set loaded in {time.time() - st:.4}s ({len(val_set)} samples in "
         f"{len(val_loader)} batches)"
     )
-    with open(os.path.join(args.val_path, "labels.json"), "rb") as f:
-        val_hash = hashlib.sha256(f.read()).hexdigest()
+    # with open(os.path.join(args.val_path, "labels.json"), "rb") as f:
+    #     val_hash = hashlib.sha256(f.read()).hexdigest()
 
     batch_transforms = Normalize(mean=(0.798, 0.785, 0.772), std=(0.264, 0.2749, 0.287))
 
@@ -274,8 +274,8 @@ def main(args):
         f"Train set loaded in {time.time() - st:.4}s ({len(train_set)} samples in "
         f"{len(train_loader)} batches)"
     )
-    with open(os.path.join(args.train_path, "labels.json"), "rb") as f:
-        train_hash = hashlib.sha256(f.read()).hexdigest()
+    # with open(os.path.join(args.train_path, "labels.json"), "rb") as f:
+    #     train_hash = hashlib.sha256(f.read()).hexdigest()
 
     if args.show_samples:
         x, target = next(iter(train_loader))
@@ -288,7 +288,7 @@ def main(args):
             p.reguires_grad_(False)
 
     # Optimizer
-    optimizer = torch.optim.Adam(
+    optimizer = torch.optim.AdamW(
         [p for p in model.parameters() if p.requires_grad],
         args.lr,
         betas=(0.95, 0.99),
@@ -330,8 +330,8 @@ def main(args):
                 "optimizer": "adam",
                 "framework": "pytorch",
                 "scheduler": args.sched,
-                "train_hash": train_hash,
-                "val_hash": val_hash,
+                # "train_hash": train_hash,
+                # "val_hash": val_hash,
                 "pretrained": args.pretrained,
                 "rotation": args.rotation,
                 "amp": args.amp,
