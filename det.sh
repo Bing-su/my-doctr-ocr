@@ -1,9 +1,8 @@
 python train_det.py \
     --epochs 10 \
-    --batch_size 12 \
+    --batch_size 2 \
     --lr 0.001 \
     --wd 0.01 \
-    -j 12 \
     --wb \
     --push-to-hub \
     --pretrained \

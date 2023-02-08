@@ -201,6 +201,7 @@ def main(args):
         sampler=SequentialSampler(val_set),
         pin_memory=torch.cuda.is_available(),
         collate_fn=val_set.datasets[0].collate_fn,
+        persistent_workers=True,
     )
     print(
         f"Validation set loaded in {time.time() - st:.4}s ({len(val_set)} samples in "
@@ -269,6 +270,7 @@ def main(args):
         sampler=RandomSampler(train_set),
         pin_memory=torch.cuda.is_available(),
         collate_fn=train_set.datasets[0].collate_fn,
+        persistent_workers=True,
     )
     print(
         f"Train set loaded in {time.time() - st:.4}s ({len(train_set)} samples in "
