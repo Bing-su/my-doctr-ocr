@@ -108,14 +108,12 @@ def record_lr(
 def fit_one_epoch(
     model, train_loader, batch_transforms, optimizer, scheduler, mb, amp=False
 ):
-
     if amp:
         scaler = torch.cuda.amp.GradScaler()
 
     model.train()
     # Iterate over the batches of the dataset
     for images, targets in progress_bar(train_loader, parent=mb):
-
         if torch.cuda.is_available():
             images = images.cuda()
         images = batch_transforms(images)
@@ -143,14 +141,14 @@ def fit_one_epoch(
 
 
 @torch.no_grad()
-def evaluate(model, val_loader, batch_transforms, val_metric, amp=False):
+def evaluate(model, val_loader, batch_transforms, val_metric, mb, amp=False):
     # Model in eval mode
     model.eval()
     # Reset val metric
     val_metric.reset()
     # Validation loop
     val_loss, batch_cnt = 0, 0
-    for images, targets in val_loader:
+    for images, targets in progress_bar(val_loader, parent=mb):
         if torch.cuda.is_available():
             images = images.cuda()
         images = batch_transforms(images)
@@ -179,7 +177,6 @@ def evaluate(model, val_loader, batch_transforms, val_metric, amp=False):
 
 
 def main(args):
-
     print(args)
 
     if args.push_to_hub:
@@ -318,7 +315,6 @@ def main(args):
 
     # W&B
     if args.wb:
-
         run = wandb.init(
             name=exp_name,
             project="text-detection",
@@ -329,7 +325,7 @@ def main(args):
                 "batch_size": args.batch_size,
                 "architecture": args.arch,
                 "input_size": args.input_size,
-                "optimizer": "adam",
+                "optimizer": "adamw",
                 "framework": "pytorch",
                 "scheduler": args.sched,
                 # "train_hash": train_hash,
@@ -357,7 +353,7 @@ def main(args):
         )
         # Validation loop at the end of each epoch
         val_loss, recall, precision, mean_iou = evaluate(
-            model, val_loader, batch_transforms, val_metric, amp=args.amp
+            model, val_loader, batch_transforms, val_metric, mb, amp=args.amp
         )
         if val_loss < min_loss:
             print(
