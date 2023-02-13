@@ -178,4 +178,4 @@ wandb/
 checkpoints*/
 .ckpt
 .pt
-save/
+save*/
