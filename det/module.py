@@ -40,13 +40,13 @@ class DetModule(pl.LightningModule):
     def training_step(self, batch, batch_idx):
         images, targets = batch
         output = self.model(images, targets)
-        self.log("train_loss", output["loss"])
+        self.log("train_loss", output["loss"], on_step=True, on_epoch=True)
         return output["loss"]
 
     def validation_step(self, batch, batch_idx):
         images, targets = batch
         output = self.model(images, targets, return_preds=False)
-        self.log("val_loss", output["loss"])
+        self.log("val_loss", output["loss"], on_epoch=True)
 
         # loc_preds = output["preds"]
         # for target, loc_pred in zip(targets, loc_preds):
