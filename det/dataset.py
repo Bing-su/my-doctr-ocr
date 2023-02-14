@@ -145,7 +145,7 @@ class DetDataModule(pl.LightningDataModule):
             num_workers=self.num_workers,
             collate_fn=self.train_ds.datasets[0].collate_fn,
             pin_memory=True,
-            persistent_workers=True,
+            persistent_workers=self.num_workers > 0,
         )
 
     def val_dataloader(self):
@@ -156,5 +156,5 @@ class DetDataModule(pl.LightningDataModule):
             num_workers=self.num_workers,
             collate_fn=self.val_ds.datasets[0].collate_fn,
             pin_memory=True,
-            persistent_workers=True,
+            persistent_workers=self.num_workers > 0,
         )
