@@ -129,6 +129,10 @@ class DetDataModule(pl.LightningDataModule):
         self.batch_size = batch_size
         self.num_workers = num_workers
 
+        self.batch_transform = Normalize(
+            mean=(0.798, 0.785, 0.772), std=(0.264, 0.2749, 0.287)
+        )
+
     def setup(self, stage=None):
         start = time.time()
         logger.info("Loading datasets...")
@@ -158,3 +162,8 @@ class DetDataModule(pl.LightningDataModule):
             pin_memory=True,
             persistent_workers=self.num_workers > 0,
         )
+
+    def on_before_batch_transfer(self, batch, dataloader_idx):
+        images, targets = batch
+        images = self.batch_transform(images)
+        return images, targets

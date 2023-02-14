@@ -33,9 +33,6 @@ class DetModule(pl.LightningModule):
             class_names=[CLASS_NAME],
         )
 
-        self.batch_transform = Normalize(
-            mean=(0.798, 0.785, 0.772), std=(0.264, 0.2749, 0.287)
-        )
         self.metric = LocalizationConfusion(
             use_polygons=rotation and not eval_straight, use_broadcasting=False
         )
@@ -48,35 +45,30 @@ class DetModule(pl.LightningModule):
 
     def validation_step(self, batch, batch_idx):
         images, targets = batch
-        output = self.model(images, targets, return_preds=True)
+        output = self.model(images, targets, return_preds=False)
         self.log("val_loss", output["loss"])
 
-        loc_preds = output["preds"]
-        for target, loc_pred in zip(targets, loc_preds):
-            for boxes_gt, boxes_pred in zip(target.values(), loc_pred.values()):
-                if self.hparams.rotation and self.hparams.eval_straight:
-                    # Convert pred to boxes [xmin, ymin, xmax, ymax]  N, 4, 2 --> N, 4
-                    boxes_pred = np.concatenate(
-                        (boxes_pred.min(axis=1), boxes_pred.max(axis=1)), axis=-1
-                    )
-                self.metric.update(gts=boxes_gt, preds=boxes_pred[:, :4])
+        # loc_preds = output["preds"]
+        # for target, loc_pred in zip(targets, loc_preds):
+        #     for boxes_gt, boxes_pred in zip(target.values(), loc_pred.values()):
+        #         if self.hparams.rotation and self.hparams.eval_straight:
+        #             # Convert pred to boxes [xmin, ymin, xmax, ymax]  N, 4, 2 --> N, 4
+        #             boxes_pred = np.concatenate(
+        #                 (boxes_pred.min(axis=1), boxes_pred.max(axis=1)), axis=-1
+        #             )
+        #         self.metric.update(gts=boxes_gt, preds=boxes_pred[:, :4])
 
-    def on_before_batch_transfer(self, batch, dataloader_idx):
-        images, targets = batch
-        images = self.batch_transform(images)
-        return images, targets
+    # def on_validation_epoch_start(self):
+    #     self.metric.reset()
 
-    def on_validation_epoch_start(self):
-        self.metric.reset()
-
-    def on_validation_epoch_end(self):
-        recall, precision, mean_iou = self.metric.summary()
-        result = {
-            "val_recall": recall,
-            "val_precision": precision,
-            "val_mean_iou": mean_iou,
-        }
-        self.log_dict(result)
+    # def on_validation_epoch_end(self):
+    #     recall, precision, mean_iou = self.metric.summary()
+    #     result = {
+    #         "val_recall": recall,
+    #         "val_precision": precision,
+    #         "val_mean_iou": mean_iou,
+    #     }
+    #     self.log_dict(result)
 
     def configure_optimizers(self):
         kwargs = {}

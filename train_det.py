@@ -1,6 +1,7 @@
 from datetime import datetime
 from pathlib import Path
 
+import torch
 import pytorch_lightning as pl
 from doctr.models import push_to_hf_hub
 from loguru import logger
@@ -17,6 +18,7 @@ from det.dataset import DetDataModule
 from det.module import DetModule
 
 install(show_locals=True, suppress=["torch"])
+torch.set_float32_matmul_precision("high")
 
 
 def main():
