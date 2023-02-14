@@ -143,7 +143,7 @@ class DetDataModule(pl.LightningDataModule):
             batch_size=self.batch_size,
             shuffle=True,
             num_workers=self.num_workers,
-            collate_fn=self.train_ds[0].collate_fn,
+            collate_fn=self.train_ds.datasets[0].collate_fn,
             pin_memory=True,
             persistent_workers=True,
         )
@@ -154,7 +154,7 @@ class DetDataModule(pl.LightningDataModule):
             batch_size=self.batch_size,
             shuffle=False,
             num_workers=self.num_workers,
-            collate_fn=self.val_ds[0].collate_fn,
+            collate_fn=self.val_ds.datasets[0].collate_fn,
             pin_memory=True,
             persistent_workers=True,
         )
