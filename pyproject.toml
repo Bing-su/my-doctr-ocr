@@ -1,6 +1,6 @@
 [project]
 name = "my-doctr-ocr"
-version = "0.2.0"
+version = "0.3.0"
 description = "training doctr ocr model"
 authors = [
     {name = "dowon", email = "ks2515@naver.com"},
