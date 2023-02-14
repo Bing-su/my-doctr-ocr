@@ -41,12 +41,12 @@ def val_sample_transform(args: argparse.Namespace):
 
 def train_img_transform():
     return Compose(
-            [
-                # Augmentations
-                T.RandomApply(T.ColorInversion(), 0.1),
-                ColorJitter(brightness=0.3, contrast=0.3, saturation=0.3, hue=0.02),
-            ]
-        )
+        [
+            # Augmentations
+            T.RandomApply(T.ColorInversion(), 0.1),
+            ColorJitter(brightness=0.3, contrast=0.3, saturation=0.3, hue=0.02),
+        ]
+    )
 
 
 def train_sample_transform(args: argparse.Namespace):

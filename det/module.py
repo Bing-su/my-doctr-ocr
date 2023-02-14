@@ -7,8 +7,8 @@ from typing import Any
 import numpy as np
 import pytorch_lightning as pl
 import torch
-from doctr.models import detection
 from doctr.file_utils import CLASS_NAME
+from doctr.models import detection
 from doctr.utils.metrics import LocalizationConfusion
 from timm.optim import create_optimizer_v2
 from torchvision.transforms import Normalize

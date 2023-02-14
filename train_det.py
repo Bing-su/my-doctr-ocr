@@ -21,7 +21,6 @@ install(show_locals=True, suppress=["torch"])
 
 def main():
     cfg: Munch = Munch.fromYAML(Path("config_det.yaml").read_text("utf-8"))
-    data: Munch = Munch.fromYAML(Path(".csv.yaml").read_text("utf-8"))
 
     logger.info("Start training")
 

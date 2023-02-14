@@ -4,10 +4,10 @@ import time
 from pathlib import Path
 
 import pytorch_lightning as pl
+from doctr import transforms as T
+from doctr.datasets import DetectionDataset
 from loguru import logger
 from munch import Munch
-from doctr.datasets import DetectionDataset
-from doctr import transforms as T
 from torch.utils.data import ConcatDataset, DataLoader, RandomSampler, SequentialSampler
 from torchvision.transforms import ColorJitter, Compose, Normalize
 
